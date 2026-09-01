@@ -35,6 +35,7 @@ source_files=(
     "SECURITY.md"
     "config/agent.example.json"
     "install.sh"
+    "lib/install-health.sh"
     "logrotate/inew-openbao-control-agent"
     "nginx/inew-openbao-control-agent.conf.template"
     "systemd/inew-openbao-control-agent@.service"

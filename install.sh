@@ -3,6 +3,8 @@ set -Eeuo pipefail
 umask 077
 
 readonly ROOT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)"
+# shellcheck source=lib/install-health.sh
+source "$ROOT_DIR/lib/install-health.sh"
 readonly ANSWER_KEYS=(
     INEW_ENVIRONMENT
     INEW_PUBLIC_HOST
@@ -206,7 +208,7 @@ case "$#" in
 esac
 
 require_root
-for required_command in awk cp curl find getent grep id install nginx openssl readlink runuser sed sha256sum stat systemctl systemd-analyze uname useradd; do
+for required_command in awk cp curl find getent grep id install nginx openssl readlink runuser sed sha256sum sleep stat systemctl systemd-analyze uname useradd; do
     require_command "$required_command"
 done
 validate_platform
@@ -390,9 +392,9 @@ systemctl enable --now "$SERVICE_NAME"
 systemctl is-active --quiet "$SERVICE_NAME" || fail "служба Agent не запустилась"
 systemctl is-active --quiet nginx || systemctl start nginx
 systemctl reload nginx
-curl --fail --silent --show-error --max-time 10 \
-    "http://127.0.0.1:$INEW_AGENT_PORT/api/v1/health" >/dev/null \
-    || fail "локальная проверка состояния Agent не пройдена"
+AGENT_HEALTH_URI="http://127.0.0.1:$INEW_AGENT_PORT/api/v1/health"
+wait_for_agent_health "$AGENT_HEALTH_URI" 30 1 \
+    || fail "Agent не стал готов за 30 секунд. Выполните: journalctl -u $SERVICE_NAME -n 50 --no-pager"
 
 MUTATION_STARTED=0
 trap - ERR INT TERM

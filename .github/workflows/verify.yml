@@ -15,6 +15,7 @@ jobs:
       - name: Проверка синтаксиса Bash
         run: |
           bash -n install.sh
+          bash -n lib/install-health.sh
           bash -n verify-release.sh
       - name: Проверка публичной структуры
         run: bash verify-release.sh --source-only
