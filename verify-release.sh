@@ -76,6 +76,10 @@ for relative_path in "${source_files[@]}"; do
     fi
 done
 
+grep -Fqx 'systemd-analyze verify "$SYSTEMD_UNIT_PATH:$SERVICE_NAME"' \
+    "$ROOT_DIR/install.sh" \
+    || fail "systemd template must be verified with the selected instance alias"
+
 if [[ "$MODE" == "--source-only" ]]; then
     printf 'source_layout_valid\n'
     exit 0

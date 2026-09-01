@@ -372,7 +372,7 @@ mv -f -- "$NGINX_TEMP" "$NGINX_CONFIGURATION_PATH"
 runuser -u "$SERVICE_USER" -- "$RELEASE_BINARY_PATH" \
     --config "$CONFIGURATION_PATH" --validate-config | grep -qx 'configuration_valid' \
     || fail "Agent отклонил сформированную конфигурацию"
-systemd-analyze verify "$SYSTEMD_UNIT_PATH"
+systemd-analyze verify "$SYSTEMD_UNIT_PATH:$SERVICE_NAME"
 nginx -t
 
 PAIRING_CODE=''
