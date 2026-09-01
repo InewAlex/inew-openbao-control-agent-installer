@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "environmentId": "dev",
+  "listenUri": "http://127.0.0.1:9120/",
+  "openBaoBaseUri": "http://127.0.0.1:8200/",
+  "stateDirectory": "/var/lib/inew-openbao-control-agent/dev",
+  "auditDirectory": "/var/log/inew-openbao-control-agent/dev",
+  "backupDirectory": "/var/backups/inew-openbao-control-agent/dev",
+  "deviceCaCertificatePath": "/etc/inew-openbao-control-agent/dev/device-ca.crt",
+  "deviceCaPrivateKeyPath": "/etc/inew-openbao-control-agent/dev/device-ca.key",
+  "allowedOperatorPolicies": [
+    "replace-with-operator-policy"
+  ],
+  "allowedOperatorEntityIds": [
+    "replace-with-operator-entity-id"
+  ],
+  "minimumOperatorTtlSeconds": 300,
+  "allowOrphanOperatorTokens": false
+}
+

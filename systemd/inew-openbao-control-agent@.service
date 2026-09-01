@@ -1,0 +1,40 @@
+[Unit]
+Description=INew OpenBao Control Agent (%i)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=inew-openbao-agent-%i
+Group=inew-openbao-agent-%i
+ExecStart=/opt/inew-openbao-control-agent/current-%i/inew-openbao-control-agent --config /etc/inew-openbao-control-agent/%i/agent.json
+Restart=on-failure
+RestartSec=5s
+TimeoutStopSec=30s
+UMask=0077
+
+NoNewPrivileges=true
+AmbientCapabilities=
+CapabilityBoundingSet=
+PrivateDevices=true
+PrivateTmp=true
+ProtectClock=true
+ProtectControlGroups=true
+ProtectHome=true
+ProtectHostname=true
+ProtectKernelLogs=true
+ProtectKernelModules=true
+ProtectKernelTunables=true
+ProtectSystem=strict
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
+RestrictNamespaces=true
+RestrictRealtime=true
+SystemCallArchitectures=native
+LockPersonality=true
+ProtectProc=invisible
+ProcSubset=pid
+RestrictSUIDSGID=true
+ReadWritePaths=/var/lib/inew-openbao-control-agent/%i /var/log/inew-openbao-control-agent/%i /var/backups/inew-openbao-control-agent/%i
+
+[Install]
+WantedBy=multi-user.target

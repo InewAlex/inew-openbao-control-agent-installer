@@ -1,0 +1,10 @@
+# Бинарный Agent публикуется только как asset GitHub Release.
+release/
+*.tar.gz
+*.zip
+
+# Локальные ответы и конфигурации могут содержать инфраструктурные данные.
+*.env
+*.answers
+agent.json
+

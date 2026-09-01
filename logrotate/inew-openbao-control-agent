@@ -1,0 +1,10 @@
+/var/log/inew-openbao-control-agent/*/*.log {
+    daily
+    rotate 14
+    missingok
+    notifempty
+    compress
+    delaycompress
+    copytruncate
+}
+

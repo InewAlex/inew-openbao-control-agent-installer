@@ -1,0 +1,20 @@
+name: verify-public-installer
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Проверка синтаксиса Bash
+        run: |
+          bash -n install.sh
+          bash -n verify-release.sh
+      - name: Проверка публичной структуры
+        run: bash verify-release.sh --source-only
