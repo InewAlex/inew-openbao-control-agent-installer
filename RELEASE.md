@@ -25,6 +25,19 @@ bash -n ./install.sh
 - Nginx `/etc/nginx/conf.d/inew-openbao-control-agent-<env>.conf`;
 - версии `/opt/inew-openbao-control-agent/releases/<version>` и независимая ссылка `current-<env>`.
 
+Каталог распаковки Release asset не является каталогом установки. Допустимо скачать и распаковать архив в созданный через `mktemp -d` временный каталог: после успешного `sudo ./install.sh` служба использует только постоянные пути выше. Для DEV точкой запуска является `/opt/inew-openbao-control-agent/current-dev/inew-openbao-control-agent`, для PROD — `/opt/inew-openbao-control-agent/current-prod/inew-openbao-control-agent`.
+
+Проверка фактических путей после установки DEV:
+
+```bash
+readlink -f /opt/inew-openbao-control-agent/current-dev
+systemctl cat inew-openbao-control-agent@dev.service
+systemctl is-enabled inew-openbao-control-agent@dev.service
+systemctl is-active inew-openbao-control-agent@dev.service
+```
+
+Первая команда должна показать каталог `/opt/inew-openbao-control-agent/releases/<version>`, а `ExecStart` — путь через `current-dev`. Для PROD замените `dev` на `prod`.
+
 Быстрая диагностика:
 
 ```bash

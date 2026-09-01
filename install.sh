@@ -17,6 +17,9 @@ readonly ANSWER_KEYS=(
 
 fail() {
     printf 'Ошибка: %s\n' "$1" >&2
+    if [[ "${MUTATION_STARTED:-0}" -eq 1 ]]; then
+        rollback 1
+    fi
     exit 1
 }
 
@@ -379,7 +382,7 @@ PAIRING_CODE=''
 if [[ ! -f "$DEVICE_STATE_PATH" ]]; then
     PAIRING_CODE="$(runuser -u "$SERVICE_USER" -- "$RELEASE_BINARY_PATH" \
         --config "$CONFIGURATION_PATH" --create-pairing)"
-    [[ "$PAIRING_CODE" =~ ^[A-Z0-9-]{8,128}$ ]] || fail "Agent вернул некорректный код привязки"
+    [[ "$PAIRING_CODE" =~ ^[A-Za-z0-9_-]{43}$ ]] || fail "Agent вернул некорректный код привязки"
 fi
 
 systemctl daemon-reload

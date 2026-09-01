@@ -14,13 +14,17 @@ case "$MODE" in
     *) fail "unsupported verification mode" ;;
 esac
 
-if find "$ROOT_DIR" -mindepth 1 -type l -print -quit | grep -q .; then
+if find "$ROOT_DIR" -mindepth 1 \
+    -path "$ROOT_DIR/.git" -prune -o \
+    -type l -print -quit | grep -q .; then
     fail "symbolic links are forbidden"
 fi
 
 mapfile -t actual_files < <(
     cd "$ROOT_DIR"
-    find . -type f -printf '%P\n' | LC_ALL=C sort
+    find . -mindepth 1 \
+        -path './.git' -prune -o \
+        -type f -printf '%P\n' | LC_ALL=C sort
 )
 
 source_files=(
@@ -79,6 +83,13 @@ done
 grep -Fqx 'systemd-analyze verify "$SYSTEMD_UNIT_PATH:$SERVICE_NAME"' \
     "$ROOT_DIR/install.sh" \
     || fail "systemd template must be verified with the selected instance alias"
+grep -Fqx '    [[ "$PAIRING_CODE" =~ ^[A-Za-z0-9_-]{43}$ ]] || fail "Agent вернул некорректный код привязки"' \
+    "$ROOT_DIR/install.sh" \
+    || fail "installer must accept the exact Base64URL pairing code format"
+fail_body="$(sed -n '/^fail() {$/,/^}$/p' "$ROOT_DIR/install.sh")"
+grep -Fq 'if [[ "${MUTATION_STARTED:-0}" -eq 1 ]]; then' <<<"$fail_body" \
+    && grep -Fq 'rollback 1' <<<"$fail_body" \
+    || fail "explicit installer failures after mutation must invoke rollback"
 
 if [[ "$MODE" == "--source-only" ]]; then
     printf 'source_layout_valid\n'
