@@ -2,6 +2,12 @@
 
 Автор: INew
 
+Начиная с v1.0.6 доступен отдельный план `operator-audit-read-repair-v1` только для
+DEV: добавление `sudo` на точном `sys/audit` в `platform-operator`. Процедура требует
+обновлённого Windows Manager, явного подтверждения, двух Unseal-долей и резервного
+Raft-снимка. Обычный вход по-прежнему выполняется через Userpass/TOTP; постоянный
+root не нужен. Ограничения и восстановление описаны в `RELEASE.md`.
+
 Публичный установщик Linux-компонента, который связывает OpenBao Manager с локальным OpenBao через защищённый HTTPS-контур. В Git находятся только установщик, проверяющие скрипты и безопасные шаблоны. Исполняемый файл Agent публикуется отдельно в GitHub Releases.
 
 Репозиторий: [InewAlex/inew-openbao-control-agent-installer](https://github.com/InewAlex/inew-openbao-control-agent-installer).
