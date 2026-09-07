@@ -15,6 +15,5 @@
     "replace-with-operator-entity-id"
   ],
   "minimumOperatorTtlSeconds": 300,
-  "allowOrphanOperatorTokens": false
+  "allowOrphanOperatorTokens": true
 }
-

@@ -352,7 +352,7 @@ cat > "$CONFIGURATION_TEMP" <<JSON
   "allowedOperatorPolicies": $POLICIES_JSON,
   "allowedOperatorEntityIds": $ENTITIES_JSON,
   "minimumOperatorTtlSeconds": $INEW_MIN_OPERATOR_TTL_SECONDS,
-  "allowOrphanOperatorTokens": false
+  "allowOrphanOperatorTokens": true
 }
 JSON
 chown "$SERVICE_USER:$SERVICE_USER" "$CONFIGURATION_TEMP"
